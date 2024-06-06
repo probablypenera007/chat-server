@@ -17,10 +17,10 @@ const chatUserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message',
       }],
-      receivedMessages: [{
+    receivedMessages: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message',
-      }],
+    }],
 });
 
 chatUserSchema.statics.findUserByCredentials = function findUserByCredentials(

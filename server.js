@@ -3,6 +3,7 @@ const express = require('express');
 const helmet = require("helmet");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { errors } = require("celebrate");
 const routes = require("./routes")
 const { PORT = 3001 , MONGODB_URI} = require("./utils/config");
 const { createChatUser, login } = require("./controllers/chatUserController");
@@ -33,6 +34,7 @@ app.post("/signup", createChatUser)
 app.use(routes);
 
 app.use(errorLogger)
+app.use(errors());
 app.use(errorHandler);
 
 app.listen((PORT)
