@@ -13,6 +13,14 @@ const chatUserSchema = new mongoose.Schema({
         required: true,
         select: false,
     },
+    sentMessages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message',
+      }],
+      receivedMessages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message',
+      }],
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(
