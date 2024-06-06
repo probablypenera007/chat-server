@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const { auth } = require("../middlewares/auth");
-const {getCurrentChatUser} = require("../controllers/chatUserController")
+const {getCurrentChatUsers} = require("../controllers/chatUserController")
 
-router.get("/me", auth, getCurrentChatUser);
+router.get("/me",auth, getCurrentChatUsers);
 
 
 module.exports = router;

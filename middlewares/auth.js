@@ -10,11 +10,13 @@ const auth = (req, res, next) => {
   }
 
   const token = authorization.replace("Bearer ", "");
+  console.log("Received token:", token);
 
   let payload;
 
   try {
     payload = jwt.verify(token, JWT_SECRET);
+    console.log("Token payload:", payload);
   } catch (e) {
     return next(new UnauthorizedError("Unauthorized Token in auth.js"));
   }

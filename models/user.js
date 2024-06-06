@@ -34,7 +34,7 @@ chatUserSchema.statics.findUserByCredentials = function findUserByCredentials(
             return Promise.reject(new Error("Incorrect username or password"));  
         } 
         
-        return bcrypt.compare(password, user.paswword).then((matched) => {
+        return bcrypt.compare(password, user.password).then((matched) => {
             if (!matched) {
                 return Promise.reject(new Error("Incorrect username or password"));
             }

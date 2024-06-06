@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const chatUsers = require("../models/user")
 const { NODE_ENV, JWT_SECRET } = require("../utils/config");
 const BadRequestError = require("../errors/bad-request-err");
