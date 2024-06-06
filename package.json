@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint .",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "probablypenera007"
   },
   "keywords": [],
   "author": "James Penera",
@@ -11,6 +18,10 @@
   "description": "Chat Server",
   "dependencies": {
     "body-parser": "^1.20.2",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongoose": "^8.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.3"
   }
 }
