@@ -23,7 +23,7 @@ const chatUserSchema = new mongoose.Schema({
       }],
 });
 
-userSchema.statics.findUserByCredentials = function findUserByCredentials(
+chatUserSchema.statics.findUserByCredentials = function findUserByCredentials(
     username,
     password,
 ) {
