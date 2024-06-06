@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const userSchema = new mongoose.Schema({
+const chatUserSchema = new mongoose.Schema({
     username: {
         type: String,
         minLength: 2,
@@ -22,6 +22,17 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(
     return this.findOne({username})
     .select("+password")
     .then((user) => {
+        if (!user) {
+            return Promise.reject(new Error("Incorrect username or password"));  
+        } 
         
-    })
-}
+        return bcrypt.compare(password, user.paswword).then((matched) => {
+            if (!matched) {
+                return Promise.reject(new Error("Incorrect username or password"));
+            }
+            return user;
+        });
+    });
+};
+
+module.exports = mongoose.model("ChatUsers", chatUserSchema);
