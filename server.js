@@ -22,7 +22,7 @@ app.use(express.json());
 app.post("./signin", login)
 app.post("./signup", createChatUser)
 
-app.use(routes);
+// app.use(routes);
 
 
 app.listen((PORT)
