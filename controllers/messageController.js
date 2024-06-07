@@ -2,16 +2,13 @@ const Message = require("../models/message");
 const chatUser = require("../models/user");
 const BadRequestError = require("../errors/bad-request-err");
 const NotFoundError = require("../errors/not-found-err");
-
-
-// WILL EXECUTE ENCRYPTION HERE
+const { encrypt, decrypt } = require("../utils/encryption");
 
 const sendMessage = async (req, res, next) => {
   try {
     const { receiverId, message } = req.body;
     const senderId = req.user._id;
     const getUser = global.onlineUsers ? global.onlineUsers.get(receiverId) : null;
-
 
     if (!receiverId || !message || !senderId) {
       return next(new BadRequestError("Receiver ID, sender ID, and message are required!"));
@@ -24,10 +21,12 @@ const sendMessage = async (req, res, next) => {
       return next(new NotFoundError("Sender or receiver not found"));
     }
 
+    const encryptedMessage = encrypt(message);
+
     const newMessage = await Message.create({
       sender: senderId,
       receiver: receiverId,
-      message,
+      message: encryptedMessage,
       messageStatus: getUser ? "delivered" : "sent",
     });
 
@@ -57,21 +56,26 @@ const getMessages = async (req, res, next) => {
       ],
     }).sort({ createdAt: "asc" });
 
-    const unreadMessages = [];
-    messages.forEach((message, index) => {
-      if (message.messageStatus !== "read" && message.sender.toString() === to) {
-        messages[index].messageStatus = "read";
-        unreadMessages.push(message._id);
+    const decryptedMessages = messages.map((msg) => {
+      try {
+        const decryptedMessage = decrypt(msg.message);
+        return {
+          ...msg.toObject(),
+          message: decryptedMessage,
+        };
+      } catch (err) {
+        console.error('Decryption error:', err);
+        return {
+          ...msg.toObject(),
+          message: 'Decryption failed',
+        };
       }
     });
 
-    await Message.updateMany(
-      { _id: { $in: unreadMessages } },
-      { messageStatus: "read" }
-    );
-
-    res.json({ messages });
+    res.json({ messages: decryptedMessages });
   } catch (err) {
+    // console.error('Error fetching messages:', err);
+    // res.status(500).json({ message: "An error occurred on the server", error: err.message });
     next(err);
   }
 };
