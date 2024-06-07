@@ -36,7 +36,7 @@ afterAll(async () => {
   await clearTestUsers();
   await closeDatabase();
   server.close();
-}, 5000);
+}, 50000);
 
 afterEach(async () => {
   await clearTestUsers();
