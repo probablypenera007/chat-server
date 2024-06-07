@@ -4,7 +4,7 @@ const BadRequestError = require("../errors/bad-request-err");
 const NotFoundError = require("../errors/not-found-err");
 const { encrypt, decrypt } = require("../utils/encryption");
 
-const sendMessage = async (req, res, next) => {
+const sendMessage = (io) => async (req, res, next) => {
   try {
     const { receiverId, message } = req.body;
     const senderId = req.user._id;
@@ -37,6 +37,10 @@ const sendMessage = async (req, res, next) => {
 
     await sender.save();
     await receiver.save();
+
+    if (getUser) {
+      io.to(getUser.socketId).emit('receiveMessage', newMessage);
+    }
 
     res.send({ message: newMessage });
   } catch (err) {

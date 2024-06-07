@@ -10,10 +10,19 @@ const { createChatUser, login } = require("./controllers/chatUserController");
 const errorHandler = require("./middlewares/error-handler");
 const {validateLogIn, validateUserBody} = require("./middlewares/validation")
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+const socketIo = require('socket.io');
+const http = require("http");
+const path = require('path');
 
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
 app.use(helmet());
+app.use(cors());
+app.use(express.json());
+app.use(requestLogger)
 
 mongoose.set("strictQuery", false);
 mongoose.connect(MONGODB_URI)
@@ -23,20 +32,33 @@ mongoose.connect(MONGODB_URI)
 //   },
 //   (e) => console.log("DB ERROR", e),
 // );
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-app.use(cors());
-app.use(express.json());
-
-app.use(requestLogger)
+app.use(express.static(__dirname));
 
 app.post("/signin", validateLogIn ,login)
 app.post("/signup", validateUserBody, createChatUser)
 
-app.use(routes);
+app.use(routes(io));
 
 app.use(errorLogger)
 app.use(errors());
 app.use(errorHandler);
+
+io.on('connection', (socket) => {
+  console.log('New client connected', socket.id);
+
+  socket.on('sendMessage', (message) => {
+    console.log('Message received from client:', message);
+    io.emit('receiveMessage', message); 
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected', socket.id);
+  });
+});
 
 // app.listen(PORT)
 //   , () => {
@@ -45,7 +67,7 @@ app.use(errorHandler);
 
 const serverPort = NODE_ENV === 'test' ? 3002 : PORT;
 
-const server = app.listen(serverPort, () => {
+server.listen(serverPort, () => {
   if (NODE_ENV !== 'test') {
     console.log(`Server is running on port ${serverPort}`);
   }
