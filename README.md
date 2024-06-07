@@ -3,8 +3,8 @@
 ## Setup Instructions
 
 1. Clone the repository:
-    `git clone https://github.com/probablypenera007/chat-server.git`
-    `cd chat-server`
+   - `git clone https://github.com/probablypenera007/chat-server.git`
+   - `cd chat-server`
 2. Install dependencies: 
     `npm install`
 3. Set-up environment variables:
