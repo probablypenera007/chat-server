@@ -26,3 +26,16 @@ module.exports.validateLogIn = celebrate({
   }),
 });
 
+module.exports.validateMessageBody = celebrate({
+  body: Joi.object().keys({
+    receiverId: Joi.string().required().messages({
+      'string.empty': 'The "receiverId" field must be filled in',
+      'any.required': 'The "receiverId" field is required'
+    }),
+    message: Joi.string().required().messages({
+      'string.empty': 'The "message" field must be filled in',
+      'any.required': 'The "message" field is required'
+    }),
+  }),
+});
+
