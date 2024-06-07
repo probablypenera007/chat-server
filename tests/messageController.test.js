@@ -9,9 +9,9 @@ let senderId;
 let receiverId;
 
 beforeAll(async () => {
-  await clearTestUsers();
-  // await connect();
   // await clearTestUsers();
+  await connect();
+  await clearTestUsers();
   await request(app)
     .post('/signup')
     .send({ username: 'sender', password: 'password' });

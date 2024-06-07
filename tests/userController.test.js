@@ -3,7 +3,7 @@ const { app, server } = require("../server");
 const { connect, closeDatabase, clearTestUsers } = require('./fixtures/db');
 
 beforeAll(async () => {
-  // await connect()
+  await connect()
   await clearTestUsers();
 });
 
