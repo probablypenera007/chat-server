@@ -23,5 +23,11 @@ describe('Authentication Middleware', () => {
       expect(response.statusCode).toBe(200);
       expect(response.text).toBe('Protected content');
     });
+    it('should deny access with no token', async () => {
+      const response = await request(app).get('/protected');
+      expect(response.statusCode).toBe(401);
+      expect(response.body.message).toBe('Authorization required auth.js');
+    });
   
+
 });
