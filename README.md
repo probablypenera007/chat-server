@@ -8,10 +8,10 @@
 2. Install dependencies: 
     `npm install`
 3. Set-up environment variables:
-    # MONGODB_URI=mongo_uri_string
-    # JWT_SECRET=JWT_secret_key 
-    # NODE_ENV=production
-    # SECRET_KEY=secret_key_for_message_encryption
+    - MONGODB_URI=mongo_uri_string
+    - JWT_SECRET=JWT_secret_key 
+    - NODE_ENV=production
+    - SECRET_KEY=secret_key_for_message_encryption
 
 4. Run in Development Mode:
     `npm run dev`
