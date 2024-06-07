@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const { errors } = require("celebrate");
 const routes = require("./routes")
-const { PORT = 3001 , MONGODB_URI} = require("./utils/config");
+const { PORT = 3001 , MONGODB_URI, NODE_ENV} = require("./utils/config");
 const { createChatUser, login } = require("./controllers/chatUserController");
 const errorHandler = require("./middlewares/error-handler");
 const {validateLogIn, validateUserBody} = require("./middlewares/validation")
@@ -17,12 +17,12 @@ app.use(helmet());
 
 mongoose.set("strictQuery", false);
 mongoose.connect(MONGODB_URI)
-.then(
-  () => {
-    console.log(`DB is connected to "${MONGODB_URI}"`);
-  },
-  (e) => console.log("DB ERROR", e),
-);
+// .then(
+//   () => {
+//     console.log(`DB is connected to "${MONGODB_URI}"`);
+//   },
+//   (e) => console.log("DB ERROR", e),
+// );
 
 app.use(cors());
 app.use(express.json());
@@ -38,7 +38,16 @@ app.use(errorLogger)
 app.use(errors());
 app.use(errorHandler);
 
-app.listen((PORT)
-  , () => {
-  console.log(`Server is running on port ${PORT}`);
-})
+// app.listen(PORT)
+//   , () => {
+//   console.log(`Server is running on port ${PORT}`);
+// })
+
+const server = app.listen(PORT, () => {
+  if (NODE_ENV !== 'test') {
+    console.log(`Server is running on port ${PORT}`);
+  }
+});
+
+// module.exports = app; 
+module.exports = { app, server };
