@@ -41,4 +41,18 @@ beforeAll(async () => {
         expect(savedMessage.messageStatus).toBe('sent');
         expect(savedMessage.createdAt).toBeDefined();
       });
+      it('should not create a message without required fields', async () => {
+        const message = new Message();
+    
+        let err;
+        try {
+          await message.save();
+        } catch (error) {
+          err = error;
+        }
+        expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+        expect(err.errors.sender).toBeDefined();
+        expect(err.errors.receiver).toBeDefined();
+        expect(err.errors.message).toBeDefined();
+      });
   });
