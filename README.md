@@ -6,7 +6,7 @@
    - `git clone https://github.com/probablypenera007/chat-server.git`
    - `cd chat-server`
 2. Install dependencies: 
-    `npm install`
+    - `npm install`
 3. Set-up environment variables:
     - MONGODB_URI=mongo_uri_string
     - JWT_SECRET=JWT_secret_key 
