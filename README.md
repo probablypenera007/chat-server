@@ -20,9 +20,9 @@
     `npm run test`
 
 
-## API Endpoints
+# API Endpoints
 
-# User Authentication
+## User Authentication
     Signup:
 
         - POST /signup
@@ -35,7 +35,7 @@
         - Request Body: { "username": "admin", "password": "password" }
         - Response: { "token": "jwt-token" }
 
-# Messages
+## Messages
     Send Message:
         - POST /messages
         - Request Body: { "receiverId": "userId", "message": "Hello" }
