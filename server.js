@@ -8,6 +8,7 @@ const routes = require("./routes")
 const { PORT = 3001 , MONGODB_URI} = require("./utils/config");
 const { createChatUser, login } = require("./controllers/chatUserController");
 const errorHandler = require("./middlewares/error-handler");
+const {validateLogIn, validateUserBody} = require("./middlewares/validation")
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 
@@ -28,8 +29,8 @@ app.use(express.json());
 
 app.use(requestLogger)
 
-app.post("/signin", login)
-app.post("/signup", createChatUser)
+app.post("/signin", validateLogIn ,login)
+app.post("/signup", validateUserBody, createChatUser)
 
 app.use(routes);
 
