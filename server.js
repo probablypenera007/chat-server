@@ -43,11 +43,16 @@ app.use(errorHandler);
 //   console.log(`Server is running on port ${PORT}`);
 // })
 
-const server = app.listen(PORT, () => {
+const serverPort = NODE_ENV === 'test' ? 3002 : PORT;
+
+const server = app.listen(serverPort, () => {
   if (NODE_ENV !== 'test') {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${serverPort}`);
+  }
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${serverPort} is already in use.`);
   }
 });
 
-// module.exports = app; 
 module.exports = { app, server };

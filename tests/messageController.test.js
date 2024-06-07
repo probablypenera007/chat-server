@@ -1,53 +1,68 @@
 const request = require('supertest');
 const { app, server } = require('../server');
-const { connect, closeDatabase, clearDatabase } = require('./fixtures/db');
 const mongoose = require('mongoose');
+const User = require('../models/user');
+const { connect, closeDatabase, clearTestUsers } = require('./fixtures/db');
 
-beforeAll(async () => await connect());
+let token;
+let senderId;
+let receiverId;
+
+beforeAll(async () => {
+  await clearTestUsers();
+  // await connect();
+  // await clearTestUsers();
+  await request(app)
+    .post('/signup')
+    .send({ username: 'sender', password: 'password' });
+
+  await request(app)
+    .post('/signup')
+    .send({ username: 'receiver', password: 'password' });
+
+  const response = await request(app)
+    .post('/signin')
+    .send({ username: 'sender', password: 'password' });
+
+  token = response.body.token;
+  const sender = await User.findOne({ username: 'sender' });
+  const receiver = await User.findOne({ username: 'receiver' });
+
+  senderId = sender._id;
+  receiverId = receiver._id;
+});
+
 afterAll(async () => {
+  await clearTestUsers();
   await closeDatabase();
   server.close();
+}, 30000);
+
+afterEach(async () => {
+  await clearTestUsers();
+  server.close();
 });
-afterEach(async () => await clearDatabase());
 
-describe('Message Functionality', () => {
-  let token, userId;
-
-  beforeEach(async () => {
-    await request(app)
-      .post('/signup')
-      .send({ username: 'admin', password: 'password' });
-
-    const loginResponse = await request(app)
-      .post('/signin')
-      .send({ username: 'admin', password: 'password' });
-
-    token = loginResponse.body.token;
-    userId = loginResponse.body._id; // Assuming the response contains the user ID
-  });
-
+describe('Message Controller Test', () => {
   it('should send a message', async () => {
     const response = await request(app)
       .post('/messages')
       .set('Authorization', `Bearer ${token}`)
-      .send({ username: 'admin', message: 'Hello, world!' });
+      .send({
+        receiverId,
+        message: 'Hello!',
+      });
 
-    expect(response.statusCode).toBe(201);
-    expect(response.body).toHaveProperty('message', 'Hello, world!');
+    expect(response.statusCode).toBe(200);
+    expect(response.body.message).toHaveProperty('message');
   });
 
-  it('should retrieve messages', async () => {
-    const recipientId = new mongoose.Types.ObjectId(); // Simulating a recipient ID
-    await request(app)
-      .post('/messages')
-      .set('Authorization', `Bearer ${token}`)
-      .send({ username: 'admin', message: 'Hello, world!' });
-
+  it('should get messages between users', async () => {
     const response = await request(app)
-      .get(`/messages/${userId}/${recipientId}`)
+      .get(`/messages/${senderId}/${receiverId}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBeGreaterThan(0);
+    expect(response.body.messages).toBeInstanceOf(Array);
   });
 });

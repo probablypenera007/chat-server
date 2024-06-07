@@ -18,21 +18,21 @@ const connect = async () => {
 const closeDatabase = async () => {
   if (mongoose.connection.readyState !== 0) {
     await mongoose.connection.close();
+    // await mongoServer.stop();
   }
 };
 
-const clearDatabase = async () => {
-  if (mongoose.connection.readyState !== 0) {
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-      const collection = collections[key];
-      await collection.deleteMany();
-    }
-  }
+// const closeDatabase = async () => {
+//   await mongoose.connection.close();
+// };
+
+const clearTestUsers = async () => {
+  await mongoose.connection.collection('users').deleteMany({ username: { $in: ['admin', 'testuser', 'sender', 'receiver'] } });
 };
 
 module.exports = {
   connect,
   closeDatabase,
-  clearDatabase,
+  // clearDatabase,
+  clearTestUsers
 };
