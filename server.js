@@ -16,10 +16,27 @@ const errorHandler = require("./middlewares/error-handler");
 const {validateLogIn, validateUserBody} = require("./middlewares/validation")
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
+const app = express();
+
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+app.use(requestLogger)
+
+mongoose.set("strictQuery", false);
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.post("/signin", validateLogIn ,login)
+app.post("/signup", validateUserBody, createChatUser)
+
+app.use(routes(socketIo));
+
+app.use(errorLogger)
+app.use(errors());
+app.use(errorHandler);
+
 if (cluster.isMaster) {
   const numCPUs = os.cpus().length;
-  // console.log(`Master ${process.pid} is running`);
-  // console.log(`Forking ${numCPUs} workers`);
   
   for (let i = 0; i < numCPUs; i += 1) {
     cluster.fork();
@@ -28,52 +45,33 @@ if (cluster.isMaster) {
   cluster.on("exit", (worker, code, signal) => {
     console.log(`Worker ${worker.process.pid} died with code: ${code} and signal: ${signal}`);
     console.log("Starting a new worker");
+    cluster.fork();
   });
 } else {
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+  const server = http.createServer(app);
+  const io = socketIo(server);
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use(requestLogger)
+  io.on("connection", (socket) => {
+    console.log("New client connected", socket.id);
 
-mongoose.set("strictQuery", false);
-mongoose.connect(MONGODB_URI)
-.then(
-  () => {
-    console.log(`DB is connected`);
-  },
-  (e) => console.log("DB ERROR", e),
-);
-app.use(express.static(path.join(__dirname, 'public')));
+    socket.on("sendMessage", (message) => {
+      console.log("Message received from client:", message);
+      io.emit("receiveMessage", message); 
+    });
 
-app.post("/signin", validateLogIn ,login)
-app.post("/signup", validateUserBody, createChatUser)
-
-app.use(routes(io));
-
-app.use(errorLogger)
-app.use(errors());
-app.use(errorHandler);
-
-io.on("connection", (socket) => {
-  console.log("New client connected", socket.id);
-
-  socket.on("sendMessage", (message) => {
-    console.log("Message received from client:", message);
-    io.emit("receiveMessage", message); 
+    socket.on("disconnect", () => {
+      console.log("Client disconnected", socket.id);
+    });
   });
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected", socket.id);
-  });
-});
-
-server.listen((PORT)
-  , () => {
-  console.log(`Server is running on port ${PORT}`);
-})
-
+  mongoose.connect(MONGODB_URI)
+    .then(() => {
+      console.log(`DB is connected`);
+      server.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    })
+    .catch((e) => console.log("DB ERROR", e));
 }
+
+module.exports = app;
