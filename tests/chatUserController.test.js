@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = require('../server');
 const ChatUser = require('../models/user');
+const { JWT_SECRET } = require('../utils/config');
 
 
 let mongoServer;
@@ -85,7 +86,7 @@ describe('ChatUser Controller Test', () => {
             password: await bcrypt.hash('password123', 10),
         }).save();
 
-        const token = jwt.sign({ _id: user._id }, 'dev-secret', { expiresIn: '7d' });
+        const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
 
         const res = await request(app)
             .get('/users/me')
