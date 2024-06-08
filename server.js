@@ -6,7 +6,9 @@ const cors = require("cors");
 const { errors } = require("celebrate");
 const socketIo = require('socket.io');
 const http = require("http");
-const path = require('path');
+const path = require("path");
+const cluster = require("cluster")
+const os  = require("os")
 const routes = require("./routes")
 const { PORT = 3001 , MONGODB_URI, NODE_ENV} = require("./utils/config");
 const { createChatUser, login } = require("./controllers/chatUserController");
@@ -43,16 +45,16 @@ app.use(errorLogger)
 app.use(errors());
 app.use(errorHandler);
 
-io.on('connection', (socket) => {
-  console.log('New client connected', socket.id);
+io.on("connection", (socket) => {
+  console.log("New client connected", socket.id);
 
-  socket.on('sendMessage', (message) => {
-    console.log('Message received from client:', message);
-    io.emit('receiveMessage', message); 
+  socket.on("sendMessage", (message) => {
+    console.log("Message received from client:", message);
+    io.emit("receiveMessage", message); 
   });
 
-  socket.on('disconnect', () => {
-    console.log('Client disconnected', socket.id);
+  socket.on("disconnect", () => {
+    console.log("Client disconnected", socket.id);
   });
 });
 
@@ -61,14 +63,14 @@ io.on('connection', (socket) => {
 //   console.log(`Server is running on port ${PORT}`);
 // })
 
-const serverPort = NODE_ENV === 'test' ? 3002 : PORT;
+const serverPort = NODE_ENV === "test" ? 3002 : PORT;
 
 server.listen(serverPort, () => {
-  if (NODE_ENV !== 'test') {
+  if (NODE_ENV !== "test") {
     console.log(`Server is running on port ${serverPort}`);
   }
-}).on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
+}).on("error", (err) => {
+  if (err.code === "EADDRINUSE") {
     console.error(`Port ${serverPort} is already in use.`);
   }
 });
