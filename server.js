@@ -10,7 +10,7 @@ const path = require("path");
 const cluster = require("cluster")
 const os  = require("os")
 const routes = require("./routes")
-const { PORT = 3001 , MONGODB_URI, NODE_ENV} = require("./utils/config");
+const { PORT = 3001 , MONGODB_URI } = require("./utils/config");
 const { createChatUser, login } = require("./controllers/chatUserController");
 const errorHandler = require("./middlewares/error-handler");
 const {validateLogIn, validateUserBody} = require("./middlewares/validation")
@@ -21,7 +21,7 @@ if (cluster.isMaster) {
   // console.log(`Master ${process.pid} is running`);
   // console.log(`Forking ${numCPUs} workers`);
   
-  for (let i = 0; i < numCPUs; i++) {
+  for (let i = 0; i < numCPUs; i += 1) {
     cluster.fork();
   }
 
@@ -30,7 +30,7 @@ if (cluster.isMaster) {
     console.log("Starting a new worker");
   });
 } else {
-  const app = express();
+const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
@@ -43,7 +43,7 @@ mongoose.set("strictQuery", false);
 mongoose.connect(MONGODB_URI)
 .then(
   () => {
-    console.log(`DB is connected to "${MONGODB_URI}"`);
+    console.log(`DB is connected`);
   },
   (e) => console.log("DB ERROR", e),
 );
@@ -71,23 +71,9 @@ io.on("connection", (socket) => {
   });
 });
 
-// app.listen(PORT)
-//   , () => {
-//   console.log(`Server is running on port ${PORT}`);
-// })
-
-const serverPort = NODE_ENV === "test" ? 3002 : PORT;
-
-server.listen(serverPort, () => {
-  if (NODE_ENV !== "test") {
-    console.log(`Server is running on port ${serverPort}`);
-  }
-}).on("error", (err) => {
-  if (err.code === "EADDRINUSE") {
-    console.error(`Port ${serverPort} is already in use.`);
-  }
-});
-
-module.exports = { app, server };
+server.listen((PORT)
+  , () => {
+  console.log(`Server is running on port ${PORT}`);
+})
 
 }
