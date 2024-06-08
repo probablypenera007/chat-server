@@ -37,7 +37,7 @@
     Login:
     
         - POST /signin
-        - Request Body: { "username": "admin", "password": "password" }
+        - Request Body: `{ "username": "admin", "password": "password" }`
         - Response: { "token": "jwt-token" }
 
 ## Messages
@@ -56,6 +56,6 @@
 
 
 ## Postman Collection
-For easy testing of the API endpoints, you can use this [Postman collection](./chat-server.postman_collection.json)
+For easy testing of the API endpoints, you can use this [Postman Collection](./chat-server.postman_collection.json)
 
 -------  ??? 
