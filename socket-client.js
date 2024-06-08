@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             message: 'Hello from client!'
         });
 
-        socket.emit("add-user", "test_user_id");
+        socket.emit("user1", "666317aa109cfd264d99d2bb");
     });
 
     socket.on('receiveMessage', (message) => {
