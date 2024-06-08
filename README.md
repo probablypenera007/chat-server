@@ -54,4 +54,8 @@
         - DELETE /messages/:messageId
         - Response: { "message": "Message deleted successfully" }
 
+
+## Postman Collection
+For easy testing of the API endpoints, you can use this [Postman collection](./chat-server.postman_collection.json)
+
 -------  ??? 
