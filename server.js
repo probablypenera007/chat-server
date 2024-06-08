@@ -32,11 +32,7 @@ mongoose.connect(MONGODB_URI)
 //   },
 //   (e) => console.log("DB ERROR", e),
 // );
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post("/signin", validateLogIn ,login)
 app.post("/signup", validateUserBody, createChatUser)

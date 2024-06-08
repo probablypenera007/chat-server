@@ -19,6 +19,11 @@
 5. Run tests:
     `npm run test`
 
+## Testing Socket.io Connectivity
+
+1. Make sure the server is running: `npm run dev`
+2. Open your browser and navigate to `http://localhost:3001`
+3. Open the developer console to see the log messages for Socket.io connectivity.
 
 # API Endpoints
 
@@ -45,5 +50,8 @@
         - GET /messages/:from/:to
         - Response: { "messages": [{ "sender": "userId", "receiver": "userId", "message": "decrypted message", "messageStatus": "read" }] }
 
+    Delete Messages:
+        - DELETE /messages/:messageId
+        - Response: { "message": "Message deleted successfully" }
 
 -------  ??? 
