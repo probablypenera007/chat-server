@@ -75,4 +75,24 @@ describe("Message Controller Test", () => {
         expect(res.body.messages[0]).toHaveProperty('message', 'Hello there!');
     });
 
+    it('should delete a message', async () => {
+        const encryptedMessage = encrypt('Hello there!');
+
+        const message = await Message.create({
+            sender: sender._id,
+            receiver: receiver._id,
+            message: encryptedMessage,
+            messageStatus: 'sent',
+        });
+
+        const res = await request(app)
+            .delete(`/messages/${message._id}`)
+            .set('Authorization', `Bearer ${senderToken}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('message', 'Message deleted successfully');
+
+        const foundMessage = await Message.findById(message._id);
+        expect(foundMessage).toBeNull();
+    });
 })
