@@ -1,0 +1,11 @@
+name: Chat Server CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+
+jobs:
+  
