@@ -84,7 +84,17 @@ const getMessages = async (req, res, next) => {
   }
 };
 
+const deleteMessage = async (req, res, next) => {
+  try {
+    const {messageId} = req.params;
+
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = {
   sendMessage,
   getMessages,
+  deleteMessage
 };
