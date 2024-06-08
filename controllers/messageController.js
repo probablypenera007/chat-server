@@ -86,7 +86,32 @@ const getMessages = async (req, res, next) => {
 
 const deleteMessage = async (req, res, next) => {
   try {
-    const {messageId} = req.params;
+    const { messageId } = req.params;
+    const userId = req.user._id;
+
+    const message = await Message.findById(messageId);
+    if (!message) {
+      return next(new NotFoundError("Message not found"));
+    }
+
+    if (message.sender.toString() !== userId.toString()) {
+      return next(new BadRequestError("You can only delete your own messages"));
+    }
+
+    await Message.deleteOne({ _id: messageId });
+
+    const sender = await chatUser.findById(message.sender);
+    const receiver = await chatUser.findById(message.receiver);
+
+    sender.sentMessages.pull(messageId);
+    receiver.receivedMessages.pull(messageId);
+
+    await sender.save();
+    await receiver.save();
+
+    // console.log('Message deleted:', messageId);
+
+    res.send({ message: "Message deleted successfully" });
 
   } catch (err) {
     next(err)

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    const socket = io('http://localhost:3001'); // Change this URL to match your server URL if different
+    const socket = io('http://localhost:3001');
 
     socket.on('connect', () => {
         console.log('Connected to server');
