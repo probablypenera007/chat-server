@@ -16,8 +16,21 @@ const errorHandler = require("./middlewares/error-handler");
 const {validateLogIn, validateUserBody} = require("./middlewares/validation")
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
+if (cluster.isMaster) {
+  const numCPUs = os.cpus().length;
+  // console.log(`Master ${process.pid} is running`);
+  // console.log(`Forking ${numCPUs} workers`);
+  
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
 
-const app = express();
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`Worker ${worker.process.pid} died with code: ${code} and signal: ${signal}`);
+    console.log("Starting a new worker");
+  });
+} else {
+  const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
@@ -76,3 +89,5 @@ server.listen(serverPort, () => {
 });
 
 module.exports = { app, server };
+
+}
