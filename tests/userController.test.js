@@ -63,7 +63,7 @@ describe('User Authentication', () => {
       .post('/signin')
       .send({ username: 'admin', password: 'password' });
 
-    const token = signinResponse.body.token;
+    const { token } = signinResponse.body.token;
 
     const response = await request(app)
       .get('/users/me')

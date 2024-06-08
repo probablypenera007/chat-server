@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+/* global io */
+
+document.addEventListener('DOMContentLoaded', () => {
     const socket = io('http://localhost:3001');
 
     socket.on('connect', () => {

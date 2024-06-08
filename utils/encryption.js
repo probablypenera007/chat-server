@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const {SECRET_KEY} = require("./config")
+const { SECRET_KEY } = require("./config")
 
 const algorithm = 'aes-256-cbc';
 const secretKey = crypto.createHash('sha256').update(String(SECRET_KEY)).digest('base64').substr(0, 32); // Ensure it's 32 bytes
@@ -11,7 +11,7 @@ const encrypt = (text) => {
     const cipher = crypto.createCipheriv(algorithm, Buffer.from(secretKey), iv);
     let encrypted = cipher.update(text);
     encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return iv.toString('hex') + ':' + encrypted.toString('hex');
+    return  `${iv.toString('hex')}:${encrypted.toString('hex')}`;
   } catch (error) {
     console.error('Encryption error:', error);
     throw new Error('Encryption failed');

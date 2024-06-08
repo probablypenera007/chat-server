@@ -4,15 +4,15 @@ const helmet = require("helmet");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { errors } = require("celebrate");
+const socketIo = require('socket.io');
+const http = require("http");
+const path = require('path');
 const routes = require("./routes")
 const { PORT = 3001 , MONGODB_URI, NODE_ENV} = require("./utils/config");
 const { createChatUser, login } = require("./controllers/chatUserController");
 const errorHandler = require("./middlewares/error-handler");
 const {validateLogIn, validateUserBody} = require("./middlewares/validation")
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const socketIo = require('socket.io');
-const http = require("http");
-const path = require('path');
 
 
 const app = express();
