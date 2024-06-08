@@ -37,7 +37,7 @@
     Login:
     
         - POST /signin
-        - Request Body: `{ "username": "admin", "password": "password" }`
+        - Request Body: { "username": "admin", "password": "password" }
         - Response: { "token": "jwt-token" }
 
 ## Messages
