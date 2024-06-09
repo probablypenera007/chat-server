@@ -43,77 +43,81 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 
 ## User Authentication
 ### Signup:
-       - POST /signup
-       - Request Body: 
+- **Endpoint**: POST /signup
+- **Request Body** : 
+    ```json
+      { 
+        "username": "admin", 
+        "password": "password" 
+      }
+    ```
+- **Response**: 
+    ```json
+      { 
+        "username": "admin" 
+      }
+    ```
+
+
+
+### Login:
+- **Endpoint**: POST /signin
+- **Request Body**:
+    ```json
         { 
           "username": "admin", 
           "password": "password" 
         }
+    ```
 
 
-       - Response: 
-        { 
-          "username": "admin" 
+- **Response**: 
+    ```json
+        {
+          "token": "jwt-token" 
         }
+    ```
 
-
-### Login:
-        - POST /signin
-        - Request Body: 
-         { 
-           "username": "admin", 
-           "password": "password" 
-         }
-
-
-        - Response: 
-         {
-           "token": "jwt-token" 
-         }
 
 
 ## Messages
+
 ### Send Message:
-        - POST /messages
-        - Request Body: 
-        { 
-          "receiverId": "userId", 
-          "message": "Hello" 
-        }
-
-
-        - Response: 
-        { 
-          "message": { 
-             "sender": "userId", 
-             "receiver": "userId", 
-             "message": "encrypted message", 
-             "messageStatus": "sent" 
-           } 
-        }
-
+- **Endpoint**: POST /messages
+- **Request Body**:
+    ```json
+    { 
+      "receiverId": "userId", 
+      "message": "Hello" 
+    }
+    ```
+- **Response**:
+    ```json
+    { 
+      "message": { 
+         "sender": "userId", 
+         "receiver": "userId", 
+         "message": "encrypted message", 
+         "messageStatus": "sent" 
+       } 
+    }
+    ```
 
 ### Get Messages:
-        - GET /messages/:from/:to
-        - Response: 
+- **Endpoint**: GET /messages/:from/:to
+- **Response**:
+    ```json
+    { 
+      "messages": [
         { 
-          "messages":[
-              { 
-                "sender": "userId", 
-                "receiver": "userId", 
-                "message": "decrypted message", 
-                "messageStatus": "read" 
-              }] 
-         }
-
-
-### Delete Messages:
-        - DELETE /messages/:messageId
-        - Response: 
-
-        { 
-          "message": "Message deleted successfully" 
+          "sender": "userId", 
+          "receiver": "userId", 
+          "message": "decrypted message", 
+          "messageStatus": "read" 
         }
+      ] 
+    }
+    ```
 
 ### Delete Messages:
 - **Endpoint**: DELETE /messages/:messageId
