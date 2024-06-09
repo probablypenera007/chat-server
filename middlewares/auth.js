@@ -12,7 +12,7 @@ const auth = (req, res, next) => {
   const { authorization } = req.headers;
   // Check if authorization header exists and starts with "Bearer "
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    throw new UnauthorizedError("Authorization required auth.js");
+    return new UnauthorizedError("Authorization required auth.js");
   }
   // Extract the token from the authorization header
   const token = authorization.replace("Bearer ", "");
