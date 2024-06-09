@@ -59,8 +59,20 @@ describe('Integration Tests', () => {
     })
     expect(loginResponse.statusCode).toBe(200);
     expect(loginResponse.body).toHaveProperty('token')
-
+    const newUserToken = loginResponse.body.token;
     // Step 3: Send a message from sender to receiver
+    const sendMessageResponse = await request(app)
+    .post('/messages')
+    .set('Authorization', `Bearer ${senderToken}`)
+    .send({
+        receiverId: receiver._id,
+        message: 'Hello! Anyone out there?',
+    })
+
+    expect(sendMessageResponse.statusCode).toBe(200);
+    expect(sendMessageResponse.body.message).toHaveProperty('message');
+    expect(sendMessageResponse.body.message).toHaveProperty('sender', sender._id.toString());
+    expect(sendMessageResponse.body.message).toHaveProperty('receiver', receiver._id.toString());
 
     // Step 4: Retrieve messages between sender and receiver
   });
