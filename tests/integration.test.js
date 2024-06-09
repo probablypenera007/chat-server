@@ -59,7 +59,7 @@ describe('Integration Tests', () => {
     })
     expect(loginResponse.statusCode).toBe(200);
     expect(loginResponse.body).toHaveProperty('token')
-    const newUserToken = loginResponse.body.token;
+    // const newUserToken = loginResponse.body.token;
     // Step 3: Send a message from sender to receiver
     const sendMessageResponse = await request(app)
     .post('/messages')
@@ -83,4 +83,24 @@ describe('Integration Tests', () => {
     expect(getMessagesResponse.body.messages).toHaveLength(1)
     expect(getMessagesResponse.body.messages[0]).toHaveProperty('message', 'Hello! Anyone out there?');
   })
+  it('should delete a message', async () => {
+    const encryptedMessage = 'encrypted-message';
+
+    const message = await Message.create({
+      sender: sender._id,
+      receiver: receiver._id,
+      message: encryptedMessage,
+      messageStatus: 'sent',
+    });
+
+    const deleteMessageResponse = await request(app)
+      .delete(`/messages/${message._id}`)
+      .set('Authorization', `Bearer ${senderToken}`);
+
+    expect(deleteMessageResponse.statusCode).toBe(200);
+    expect(deleteMessageResponse.body).toHaveProperty('message', 'Message deleted successfully');
+
+    const foundMessage = await Message.findById(message._id);
+    expect(foundMessage).toBeNull();
+  });
 });
