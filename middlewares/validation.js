@@ -1,5 +1,8 @@
 const {Joi, celebrate} = require("celebrate")
-
+/**
+ * Middleware to validate the request body for user signup.
+ * Ensures that the username is between 2 and 30 characters and the password is provided.
+ */
 module.exports.validateUserBody = celebrate({
     body: Joi.object().keys({
         username: Joi.string().required().min(2).max(30).messages({
@@ -12,7 +15,10 @@ module.exports.validateUserBody = celebrate({
           }),
     })
 })
-
+/**
+ * Middleware to validate the request body for user login.
+ * Ensures that the username is between 2 and 30 characters and the password is provided.
+ */
 module.exports.validateLogIn = celebrate({
   body: Joi.object().keys({
     username: Joi.string().required().min(2).max(30).messages({
@@ -25,7 +31,10 @@ module.exports.validateLogIn = celebrate({
     }),
   }),
 });
-
+/**
+ * Middleware to validate the request body for sending a message.
+ * Ensures that the receiverId and message fields are provided.
+ */
 module.exports.validateMessageBody = celebrate({
   body: Joi.object().keys({
     receiverId: Joi.string().required().messages({
