@@ -4,17 +4,17 @@ const helmet = require("helmet"); // Helmet helps secure Express apps by setting
 const mongoose = require("mongoose"); // Mongoose for MongoDB object modeling and data validation
 const cors = require("cors"); // CORS middleware to allow cross-origin requests
 const { errors } = require("celebrate");  // Celebrate for validation of incoming request bodies, headers, etc.
-const socketIo = require('socket.io');
-const http = require("http");
-const path = require("path");
-const cluster = require("cluster")
-const os  = require("os")
-const routes = require("./routes")
-const { PORT = 3001 , MONGODB_URI } = require("./utils/config");
-const { createChatUser, login } = require("./controllers/chatUserController");
-const errorHandler = require("./middlewares/error-handler");
-const {validateLogIn, validateUserBody} = require("./middlewares/validation")
-const { requestLogger, errorLogger } = require("./middlewares/logger");
+const socketIo = require('socket.io');  // Socket.io for real-time, bidirectional communication between clients and server
+const http = require("http");  // Node.js HTTP module for creating the server
+const path = require("path"); // Path module for working with file and directory paths
+const cluster = require("cluster") // Cluster module for creating child processes (workers) that share the same server port
+const os  = require("os") // OS module to provide operating system-related utility methods and properties
+const routes = require("./routes") // Importing routes
+const { PORT = 3001 , MONGODB_URI } = require("./utils/config"); // Importing configuration variables
+const { createChatUser, login } = require("./controllers/chatUserController"); // Importing user-related controller functions
+const errorHandler = require("./middlewares/error-handler");  // Custom error handling middleware
+const {validateLogIn, validateUserBody} = require("./middlewares/validation")  // Request validation middleware
+const { requestLogger, errorLogger } = require("./middlewares/logger"); // Logging middleware
 
 const app = express();
 
