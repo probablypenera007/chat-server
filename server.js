@@ -16,54 +16,59 @@ const errorHandler = require("./middlewares/error-handler");  // Custom error ha
 const {validateLogIn, validateUserBody} = require("./middlewares/validation")  // Request validation middleware
 const { requestLogger, errorLogger } = require("./middlewares/logger"); // Logging middleware
 
-const app = express();
+const app = express(); // Initializing Epress Ap
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use(requestLogger)
+app.use(helmet()); // Adding security headers to the Express App
+app.use(cors()); // Enabling CORS for all requests
+app.use(express.json()); // Middleware to pare JSON bodies from incoming requests
+app.use(requestLogger) // Middleware for logging incoming requests
 
-mongoose.set("strictQuery", false);
-app.use(express.static(path.join(__dirname, 'public')));
+mongoose.set("strictQuery", false); // Mongoose setting to prevent deprecation warning from terminal
+app.use(express.static(path.join(__dirname, 'public'))); // Serving static files from "public" folder
 
+// Setting up authentication routes with validation
 app.post("/signin", validateLogIn ,login)
 app.post("/signup", validateUserBody, createChatUser)
 
+// Using the routes module and passing the socket.io instance to it
 app.use(routes(socketIo));
 
+// Adding error logging and handling middleware
 app.use(errorLogger)
-app.use(errors());
+app.use(errors());// Celebrate error handler 
 app.use(errorHandler);
 
+// Clustering to utilize multiple CPU cores
 if (cluster.isMaster) {
-  const numCPUs = os.cpus().length;
+  const numCPUs = os.cpus().length;  // Get the number of CPU cores
   
   for (let i = 0; i < numCPUs; i += 1) {
-    cluster.fork();
+    cluster.fork();  // Create a new worker process
   }
-
+  // Listen for dying workers
   cluster.on("exit", (worker, code, signal) => {
     console.log(`Worker ${worker.process.pid} died with code: ${code} and signal: ${signal}`);
     console.log("Starting a new worker");
-    cluster.fork();
+    cluster.fork();  // Create a new worker process
   });
 } else {
+   // Creating the HTTP server and attaching the socket.io instance to it
   const server = http.createServer(app);
   const io = socketIo(server);
-
+ // Socket.io connection event
   io.on("connection", (socket) => {
     console.log("New client connected", socket.id);
-
+  // Event listener for incoming messages
     socket.on("sendMessage", (message) => {
       console.log("Message received from client:", message);
-      io.emit("receiveMessage", message); 
+      io.emit("receiveMessage", message); // Broadcasting the message to all clients
     });
-
+ // Event listener for client disconnection
     socket.on("disconnect", () => {
       console.log("Client disconnected", socket.id);
     });
   });
-
+  // Connecting to MongoDB and starting the server
   mongoose.connect(MONGODB_URI)
     .then(() => {
       console.log(`DB is connected`);
@@ -74,4 +79,4 @@ if (cluster.isMaster) {
     .catch((e) => console.log("DB ERROR", e));
 }
 
-module.exports = app;
+module.exports = app; // Exporting the Express app instance for testing purposes
