@@ -115,6 +115,14 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
           "message": "Message deleted successfully" 
         }
 
+### Delete Messages:
+- **Endpoint**: DELETE /messages/:messageId
+- **Response**:
+    ```json
+    { 
+      "message": "Message deleted successfully" 
+    }
+    ```
 
 ## Postman Collection
 For easy testing of the API endpoints, you can use this [Postman Collection](./chat-server.postman_collection.json)
