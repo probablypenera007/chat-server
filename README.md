@@ -42,32 +42,32 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 # API Endpoints
 
 ## User Authentication
-    Signup:
-        - POST /signup
-        - Request Body: 
+### Signup:
+  - POST /signup
+      - Request Body: 
 
         { 
           "username": "admin", 
           "password": "password" 
         }
 
-        - Response: 
+      - Response: 
 
         { 
           "username": "admin" 
         }
 
 
-    Login:
-        - POST /signin
-        - Request Body: 
+### Login:
+  - POST /signin
+      - Request Body: 
 
          { 
            "username": "admin", 
            "password": "password" 
          }
 
-        - Response: 
+      - Response: 
 
          {
            "token": "jwt-token" 

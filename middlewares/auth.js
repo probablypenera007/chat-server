@@ -4,7 +4,8 @@ const UnauthorizedError = require("../errors/unauthorized-err");
 
 /**
  * Authentication middleware that checks for a valid JWT token in the request headers.
- * If the token is valid, the payload is attached to the request object and the next middleware is called.
+ * If the token is valid, the payload is attached to the request object 
+ * and the next middleware is called.
  * If the token is missing or invalid, an UnauthorizedError is thrown.
  */
 const auth = (req, res, next) => {

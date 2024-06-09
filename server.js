@@ -18,27 +18,60 @@ const { requestLogger, errorLogger } = require("./middlewares/logger"); // Loggi
 
 const app = express(); // Initializing Epress Ap
 
-app.use(helmet()); // Adding security headers to the Express App
-app.use(cors()); // Enabling CORS for all requests
-app.use(express.json()); // Middleware to pare JSON bodies from incoming requests
-app.use(requestLogger) // Middleware for logging incoming requests
+/**
+ * Helmet middleware for setting various HTTP headers for security.
+ */
+app.use(helmet()); 
 
-mongoose.set("strictQuery", false); // Mongoose setting to prevent deprecation warning from terminal
-app.use(express.static(path.join(__dirname, 'public'))); // Serving static files from "public" folder
+/**
+ * CORS middleware to enable Cross-Origin Resource Sharing for all requests.
+ */
+app.use(cors());
 
-// Setting up authentication routes with validation
+/**
+ * Middleware to parse JSON bodies from incoming requests.
+ */
+app.use(express.json()); 
+
+/**
+ * Middleware for logging incoming requests.
+ */
+app.use(requestLogger)
+
+/**
+ * Setting Mongoose strictQuery to false to prevent deprecation warnings.
+ */
+mongoose.set("strictQuery", false);
+
+/**
+ * Serving static files from "public" folder.
+ */
+app.use(express.static(path.join(__dirname, 'public'))); 
+
+/**
+ * Setting up authentication routes with validation.
+ */
 app.post("/signin", validateLogIn ,login)
 app.post("/signup", validateUserBody, createChatUser)
 
-// Using the routes module and passing the socket.io instance to it
+/**
+ * Using the routes module and passing the socket.io instance to it.
+ */
 app.use(routes(socketIo));
 
-// Adding error logging and handling middleware
+/**
+ * Adding error logging and handling middleware.
+ */
 app.use(errorLogger)
 app.use(errors());// Celebrate error handler 
 app.use(errorHandler);
 
-// Clustering to utilize multiple CPU cores
+/**
+ * Clustering to utilize multiple CPU cores.
+ * Master process forks worker processes equal to the number of CPU cores.
+ * This setup improves the performance and scalability of the application 
+ * by leveraging the full capacity of the server's CPU.
+ */
 if (cluster.isMaster) {
   const numCPUs = os.cpus().length;  // Get the number of CPU cores
   
@@ -52,18 +85,33 @@ if (cluster.isMaster) {
     cluster.fork();  // Create a new worker process
   });
 } else {
-   // Creating the HTTP server and attaching the socket.io instance to it
+   /**
+   * Creating the HTTP server and attaching the socket.io instance to it.
+   * This setup allows the worker processes to handle incoming HTTP requests 
+   * and real-time communications via Socket.io.
+   * Each worker process runs its own instance of the server and handles 
+   * a portion of the incoming connections.
+   */
   const server = http.createServer(app);
   const io = socketIo(server);
- // Socket.io connection event
+
+   /**
+   * Socket.io connection event.
+   * Listens for new client connections.
+   */
   io.on("connection", (socket) => {
     console.log("New client connected", socket.id);
-  // Event listener for incoming messages
+   /**
+   * Event listener for incoming messages.
+   * Broadcasts the received message to all clients.
+   */
     socket.on("sendMessage", (message) => {
       console.log("Message received from client:", message);
       io.emit("receiveMessage", message); // Broadcasting the message to all clients
     });
- // Event listener for client disconnection
+    /**
+    * Event listener for client disconnection.
+    */
     socket.on("disconnect", () => {
       console.log("Client disconnected", socket.id);
     });
