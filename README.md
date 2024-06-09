@@ -115,7 +115,7 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
         - Response: 
 
         { 
-            "message": "Message deleted successfully" 
+          "message": "Message deleted successfully" 
         }
 
 
