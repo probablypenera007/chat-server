@@ -8,6 +8,9 @@ A Node.js chat server built using Express, Mongoose, and Socket.io, designed to 
 - **📊 Structured Logging**: Keep track of server events with Winston
 - **✅ Request Validation**: Ensure data integrity with Celebrate
 - **🛡️ End-to-end Encryption**: Protect user privacy with encrypted messaging.
+- **🌐 CORS Support**: Handle cross-origin requests with ease.
+- **🔄 Clustering**: Improve performance and scalability by utilizing multiple CPU cores.
+- **🧪 Unit and Integration Testing**: Ensure reliability with comprehensive tests using Jest and SuperTest.
 
 ## Prerequisites
 - Node.js (v14 or higher)
@@ -130,3 +133,20 @@ A Node.js chat server built using Express, Mongoose, and Socket.io, designed to 
 
 ## Postman Collection
 For easy testing of the API endpoints, you can use this [Postman Collection](./chat-server.postman_collection.json)
+
+## CI/CD Pipeline
+This project includes a basic CI/CD setup using GitHub Actions. The configuration files is located in `.github/workflows/chat-server-cicd.yml` and is deigned to automate the following tasks:
+- Running tests
+- Linting codebase
+- Deploying to the specified environment
+
+## Clustering for Scalability
+To handle high-traffic and improve performance, this server leverages Node.js' clustering. Ther server forks worker processes equal to the number of CPU cores, ensuring efficient load distribution.
+
+## Testing 
+This project includes comprehensive testing to ensure reliability and correctness:
+  ### Unit Testing
+  - Unit tests are written using Jest to verify the functionality of individual components and modules
+
+  ### Integration Testing
+  - Integration tests are conducted to ensure that different parts of the application work together as expected. These tests include interactions with the database and API endpoints
