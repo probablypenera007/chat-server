@@ -46,36 +46,30 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
         - POST /signup
         - Request Body: 
         ```json
-{ 
-    "username": "admin", 
-    "password": "password" 
-}
+        { 
+         "username": "admin", 
+         "password": "password" 
+        }
 
         - Response: 
-`{ 
-    "username": "admin" 
-}`
+        `{ 
+          "username": "admin" 
+        }`
 
-- **POST** `/signup`
-- **Request Body:**
-```json
-{
-    "username": "admin",
-    "password": "password"
-}
+
     Login:
     
         - POST /signin
         - Request Body: 
-`{ 
-    "username": "admin", 
-    "password": "password" 
-}`
+        `{ 
+           "username": "admin", 
+           "password": "password" 
+         }`
 
         - Response: 
-`{
-     "token": "jwt-token" 
-}`
+        `{
+          "token": "jwt-token" 
+         }`
 
 ## Messages
     Send Message:
