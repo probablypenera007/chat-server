@@ -57,8 +57,10 @@ app.post("/signup", validateUserBody, createChatUser)
 /**
  * Using the routes module and passing the socket.io instance to it.
  */
-app.use(routes(socketIo));
-
+const server = http.createServer(app);
+const io = socketIo(server);
+// app.use(routes(socketIo));
+app.use(routes(io));
 /**
  * Adding error logging and handling middleware.
  */
@@ -92,8 +94,8 @@ if (cluster.isMaster) {
    * Each worker process runs its own instance of the server and handles 
    * a portion of the incoming connections.
    */
-  const server = http.createServer(app);
-  const io = socketIo(server);
+  // const server = http.createServer(app);
+  // const io = socketIo(server);
 
    /**
    * Socket.io connection event.

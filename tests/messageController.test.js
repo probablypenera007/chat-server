@@ -21,7 +21,7 @@ beforeAll(async () => {
         emit: jest.fn(),
     };
 
-    global.io = ioMock;
+    global.ioMock = ioMock;
     global.onlineUsers = new Map();
 });
 
@@ -53,7 +53,7 @@ describe("Message Controller Test", () => {
     });
 
     afterEach(async () => {
-        await ChatUser.deleteMany();
+        // await ChatUser.deleteMany();
         await Message.deleteMany();
     });
 
@@ -95,4 +95,20 @@ describe("Message Controller Test", () => {
         const foundMessage = await Message.findById(message._id);
         expect(foundMessage).toBeNull();
     });
+
+    it('should send a message', async () => {
+        const res = await request(app)
+          .post("/messages")
+          .set("Authorization", `Bearer ${senderToken}`)
+          .send({
+            receiverId: receiver._id,
+            message: "Hello there!",
+          });
+    
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toHaveProperty('message');
+        expect(res.body.message).toHaveProperty('sender', sender._id.toString());
+        expect(res.body.message).toHaveProperty('receiver', receiver._id.toString());
+        expect(res.body.message).toHaveProperty('messageStatus', 'delivered');
+      });
 })
