@@ -22,4 +22,22 @@ describe("Auth Middleware", () => {
     expect(next).toHaveBeenCalledWith(expect.any(UnauthorizedError));
     // expect(next.mock.calls[0][0].message).toBe("Unauthorized Token in auth.js");
   });
+
+  it("should attach user to request and call next if token is valid", () => {
+    const req = {
+      headers: {
+        authorization: "Bearer ValidToken"
+      }
+    };
+    const res = {};
+    const next = jest.fn();
+    const payload = { _id: "userId" };
+
+    jest.spyOn(jwt, "verify").mockImplementation(() => payload);
+
+    auth(req, res, next);
+
+    expect(req.user).toEqual(payload);
+    expect(next).toHaveBeenCalledWith();
+  });
 });
