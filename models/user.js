@@ -11,24 +11,29 @@ const chatUserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        select: false,
+        select: false, // Exclude password from query results by default for security
     },
     sentMessages: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Message',
+        ref: 'Message',// Reference to the Message model for messages sent by the user
       }],
     receivedMessages: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Message',
+        ref: 'Message', // Reference to the Message model for messages received by the user
     }],
 });
 
+/**
+ * Static method to find a user by credentials.
+ * This method checks if a user with the given username exists 
+ * and if the provided password matches.
+ */
 chatUserSchema.statics.findUserByCredentials = function findUserByCredentials(
     username,
     password,
 ) {
     return this.findOne({username})
-    .select("+password")
+    .select("+password") // Explicitly select the password field which is excluded by default
     .then((user) => {
         if (!user) {
             return Promise.reject(new Error("Incorrect username or password"));  
