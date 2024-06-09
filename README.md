@@ -32,6 +32,12 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 5. Run tests:
     `npm run test`
 
+## Running the Application
+- `npm run dev`: starts the app in development mode using `nodemon`
+- `npm run start`: starts the application in production mode.
+- `npm run lint`: runs the linter to check for code quality and formatting issues.
+- `npm run test`: runs the test suite using Jest. 
+
 ## Testing Socket.io Connectivity
 
 1. Make sure the server is running: `npm run dev`
