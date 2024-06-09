@@ -7,6 +7,7 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 - MongoDB for data storage
 - Structured logging with Winston
 - Request validation with Celebrate
+- End-to-end messaging encryption
 
 ## Prerequisites
 - Node.js (v14 or higher)
