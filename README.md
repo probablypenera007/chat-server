@@ -45,71 +45,77 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 
         - POST /signup
         - Request Body: 
-        ```json
+
         { 
          "username": "admin", 
          "password": "password" 
         }
 
         - Response: 
-        `{ 
+
+        { 
           "username": "admin" 
-        }`
+        }
 
 
     Login:
     
         - POST /signin
         - Request Body: 
-        `{ 
+
+         { 
            "username": "admin", 
            "password": "password" 
-         }`
+         }
 
         - Response: 
-        `{
+
+         {
           "token": "jwt-token" 
-         }`
+         }
 
 ## Messages
     Send Message:
         - POST /messages
         - Request Body: 
-`{ 
-    "receiverId": "userId", 
-    "message": "Hello" 
-    
-}`
+
+        { 
+         "receiverId": "userId", 
+         "message": "Hello" 
+        }
 
         - Response: 
-`{ 
-    "message": { 
-        "sender": "userId", 
-        "receiver": "userId", 
-        "message": "encrypted message", 
-        "messageStatus": "sent" 
-        } 
-}
+
+        { 
+         "message": { 
+            "sender": "userId", 
+            "receiver": "userId", 
+            "message": "encrypted message", 
+            "messageStatus": "sent" 
+          } 
+        }
 
     Get Messages:
         - GET /messages/:from/:to
         - Response: 
-`{ 
-    "messages":[
+
         { 
-            "sender": "userId", 
-            "receiver": "userId", 
-            "message": "decrypted message", 
-            "messageStatus": "read" 
-        }] 
-}`
+             "messages":[
+            { 
+                "sender": "userId", 
+                "receiver": "userId", 
+                "message": "decrypted message", 
+                "messageStatus": "read" 
+            }] 
+        }
 
     Delete Messages:
         - DELETE /messages/:messageId
         - Response: 
-`{ 
-    "message": "Message deleted successfully" 
-}`
+        
+        { 
+            "message": "Message deleted successfully" 
+        }
 
 
 ## Postman Collection
