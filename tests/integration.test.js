@@ -75,5 +75,12 @@ describe('Integration Tests', () => {
     expect(sendMessageResponse.body.message).toHaveProperty('receiver', receiver._id.toString());
 
     // Step 4: Retrieve messages between sender and receiver
+    const getMessageResponse = await request(app)
+    .get(`messages/${sender._id}/${receiver._id}`)
+    .set('Authorization', `Bearer ${senderToken}`);
+
+    expect(getMessageResponse.statusCode).toBe(200)
+    expect(getMessageResponse.body.messages).toHaveLength(1)
+    expect(getMessageResponse.body.messages[0]).toHaveProperty('message', 'Hello! Anyone out there?')
   });
 });
