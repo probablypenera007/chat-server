@@ -25,13 +25,7 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
     - JWT_SECRET=JWT_secret_key 
     - NODE_ENV=production
     - SECRET_KEY=secret_key_for_message_encryption
-
-4. Run in Development Mode:
-    `npm run dev`
-
-5. Run tests:
-    `npm run test`
-
+    
 ## Running the Application
 - `npm run dev`: starts the app in development mode using `nodemon`
 - `npm run start`: starts the application in production mode.
