@@ -49,8 +49,16 @@ describe('Integration Tests', () => {
     });
     expect(newUserResponse.statusCode).toBe(200)
     expect(newUserResponse.body).toHaveProperty('username', 'newuser123');
-    
+
     // Step 2: Log in with the created user
+    const loginResponse = await request(app)
+    .post('/signin')
+    .send({
+        username: 'newuser123',
+        password: 'password123'
+    })
+    expect(loginResponse.statusCode).toBe(200);
+    expect(loginResponse.body).toHaveProperty('token')
 
     // Step 3: Send a message from sender to receiver
 
