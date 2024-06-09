@@ -56,6 +56,13 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
     "username": "admin" 
 }`
 
+- **POST** `/signup`
+- **Request Body:**
+```json
+{
+    "username": "admin",
+    "password": "password"
+}
     Login:
     
         - POST /signin
