@@ -41,7 +41,15 @@ afterAll(async () => {
 describe('Integration Tests', () => {
   it('should create a user, log in, send a message, and get messages', async () => {
     // Step 1: Create a new user
-
+    const newUserResponse = await request(app)
+    .post('/signup')
+    .send({
+        username: 'newuser123',
+        password: 'password123'
+    });
+    expect(newUserResponse.statusCode).toBe(200)
+    expect(newUserResponse.body).toHaveProperty('username', 'newuser123');
+    
     // Step 2: Log in with the created user
 
     // Step 3: Send a message from sender to receiver
