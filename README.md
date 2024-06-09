@@ -44,31 +44,72 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
     Signup:
 
         - POST /signup
-        - Request Body: { "username": "admin", "password": "password" }
-        - Response: { "username": "admin" }
+        - Request Body: 
+        ```json
+{ 
+    "username": "admin", 
+    "password": "password" 
+}
+
+        - Response: 
+`{ 
+    "username": "admin" 
+}`
 
     Login:
     
         - POST /signin
-        - Request Body: { "username": "admin", "password": "password" }
-        - Response: { "token": "jwt-token" }
+        - Request Body: 
+`{ 
+    "username": "admin", 
+    "password": "password" 
+}`
+
+        - Response: 
+`{
+     "token": "jwt-token" 
+}`
 
 ## Messages
     Send Message:
         - POST /messages
-        - Request Body: { "receiverId": "userId", "message": "Hello" }
-        - Response: { "message": { "sender": "userId", "receiver": "userId", "message": "encrypted message", "messageStatus": "sent" } }
+        - Request Body: 
+`{ 
+    "receiverId": "userId", 
+    "message": "Hello" 
+    
+}`
+
+        - Response: 
+`{ 
+    "message": { 
+        "sender": "userId", 
+        "receiver": "userId", 
+        "message": "encrypted message", 
+        "messageStatus": "sent" 
+        } 
+}
 
     Get Messages:
         - GET /messages/:from/:to
-        - Response: { "messages": [{ "sender": "userId", "receiver": "userId", "message": "decrypted message", "messageStatus": "read" }] }
+        - Response: 
+`{ 
+    "messages":[
+        { 
+            "sender": "userId", 
+            "receiver": "userId", 
+            "message": "decrypted message", 
+            "messageStatus": "read" 
+        }] 
+}`
 
     Delete Messages:
         - DELETE /messages/:messageId
-        - Response: { "message": "Message deleted successfully" }
+        - Response: 
+`{ 
+    "message": "Message deleted successfully" 
+}`
 
 
 ## Postman Collection
 For easy testing of the API endpoints, you can use this [Postman Collection](./chat-server.postman_collection.json)
-
--------  ??? 
