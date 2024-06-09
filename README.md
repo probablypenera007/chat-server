@@ -1,4 +1,17 @@
 # Chat Server
+This is a Node.js chat server built using Express, Mongoose, and Socket.io, designed for real-time messaging. The server also uses Helmet for security, CORS for handling cross-origin requests, and Celebrate for request validation.
+
+## Features
+- Real-time messaging with Socket.io
+- JWT-based user authentication
+- MongoDB for data storage
+- Structured logging with Winston
+- Request validation with Celebrate
+
+## Prerequisites
+- Node.js (v14 or higher)
+- npm (vg or higher)
+- MongoDB
 
 ## Setup Instructions
 
