@@ -50,8 +50,8 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
           "password": "password" 
         }
 
-      - Response: 
 
+       - Response: 
         { 
           "username": "admin" 
         }
@@ -60,14 +60,13 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 ### Login:
         - POST /signin
         - Request Body: 
-
          { 
            "username": "admin", 
            "password": "password" 
          }
 
-        - Response: 
 
+        - Response: 
          {
            "token": "jwt-token" 
          }
@@ -77,14 +76,13 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 ### Send Message:
         - POST /messages
         - Request Body: 
-
         { 
           "receiverId": "userId", 
           "message": "Hello" 
         }
 
-        - Response: 
 
+        - Response: 
         { 
           "message": { 
              "sender": "userId", 
@@ -98,7 +96,6 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 ### Get Messages:
         - GET /messages/:from/:to
         - Response: 
-
         { 
           "messages":[
               { 
@@ -107,7 +104,7 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
                 "message": "decrypted message", 
                 "messageStatus": "read" 
               }] 
-        }
+         }
 
 
 ### Delete Messages:
