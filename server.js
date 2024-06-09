@@ -1,9 +1,9 @@
-require("dotenv").config();
-const express = require('express');
-const helmet = require("helmet");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const { errors } = require("celebrate");
+require("dotenv").config(); // Load environment variables from a .env file
+const express = require('express'); // Express framework for building web applications
+const helmet = require("helmet"); // Helmet helps secure Express apps by setting various HTTP headers
+const mongoose = require("mongoose"); // Mongoose for MongoDB object modeling and data validation
+const cors = require("cors"); // CORS middleware to allow cross-origin requests
+const { errors } = require("celebrate");  // Celebrate for validation of incoming request bodies, headers, etc.
 const socketIo = require('socket.io');
 const http = require("http");
 const path = require("path");
