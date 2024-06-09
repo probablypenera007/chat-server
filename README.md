@@ -59,15 +59,15 @@ This is a Node.js chat server built using Express, Mongoose, and Socket.io, desi
 
 
 ### Login:
-  - POST /signin
-      - Request Body: 
+        - POST /signin
+        - Request Body: 
 
          { 
            "username": "admin", 
            "password": "password" 
          }
 
-      - Response: 
+        - Response: 
 
          {
            "token": "jwt-token" 
