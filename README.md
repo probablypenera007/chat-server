@@ -23,12 +23,23 @@ A Node.js chat server built using Express, Mongoose, and Socket.io, designed to 
    - `git clone https://github.com/probablypenera007/chat-server.git`
    - `cd chat-server`
 2. Install dependencies: 
-    - `npm install`
+   - `npm install`
 3. Set-up environment variables:
     - MONGODB_URI=mongo_uri_string
     - JWT_SECRET=JWT_secret_key 
+    ### Generating a new JWT Secret Key:
+    You can generate a secure JWT secret key by running the following command in your terminal:
+    ```
+    node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+    ```
+ 
     - NODE_ENV=production
     - SECRET_KEY=secret_key_for_message_encryption
+    ### Geneating a new Secret Key for Encryption of messages:
+     You can generate a secure Secret key for message encryption by running the following command in your terminal:
+    ```
+    node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+    ```
     
 ## Running the Application
 - `npm run dev`: starts the app in development mode using `nodemon`
